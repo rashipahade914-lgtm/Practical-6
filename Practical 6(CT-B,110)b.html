@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XML DOM Parsing using JavaScript</title>
+</head>
+<body>
+  <h2>CD Catalog Information</h2>
+  <button onclick="loadXMLDoc()">Show Catalog</button>
+  <br><br>
+  <table id="catalogTable" border="3" cellpadding="6">
+    <tr>
+      <th>Title</th>
+      <th>Artist</th>
+      <th>Country</th>
+      <th>Company</th>
+      <th>Price</th>
+      <th>Year</th>
+    </tr>
+  </table>
+
+  <script>
+    function loadXMLDoc() 
+    {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() 
+      {
+        if (this.readyState == 4 && this.status == 200) 
+        {
+          showCDs(this);
+        }
+      };
+      xhttp.open("GET", "cd_catalog.xml", true);
+      xhttp.send();
+    }
+
+    function showCDs(xml) {
+      var xmlDoc = xml.responseXML;
+      var table = document.getElementById("catalogTable");
+      var cds = xmlDoc.getElementsByTagName("cd");
+
+      for (var i = 0; i < cds.length; i++)
+       {
+        var row = table.insertRow(-1);
+        var title = cds[i].getElementsByTagName("title")[0].childNodes[0].nodeValue;
+        var artist = cds[i].getElementsByTagName("artist")[0].childNodes[0].nodeValue;
+        var country = cds[i].getElementsByTagName("country")[0].childNodes[0].nodeValue;
+        var company = cds[i].getElementsByTagName("company")[0].childNodes[0].nodeValue;
+        var price = cds[i].getElementsByTagName("price")[0].childNodes[0].nodeValue;
+        var year = cds[i].getElementsByTagName("year")[0].childNodes[0].nodeValue;
+
+        row.insertCell(0).innerHTML = title;
+        row.insertCell(1).innerHTML = artist;
+        row.insertCell(2).innerHTML = country;
+        row.insertCell(3).innerHTML = company;
+        row.insertCell(4).innerHTML = price;
+        row.insertCell(5).innerHTML = year;
+      }
+    }
+  </script>
+</body>
+</html>
